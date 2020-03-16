@@ -49,30 +49,38 @@ table.6 <- cbind(data.frame('Rank'  = c(1,2,3,4,5)),
 print(table.6)
 
 # Table 7. Average accuracy for eadch algorithm
-table.7 <- data.frame('Algorithms' = c('MMAC', 
-                                        'CBA', 
-                                        'CBA + multiple minimum support',
-                                        'SVAC - support and confidence',
-                                        'SVAC - rule voting',
-                                        'SVAC - feature weight',
-                                        'SVAC'),
-                      'Accuracy'   = c(percent(mean(df.result.comp[, 16])), 
+table.7 <- data.frame('Algorithms' = c('MMAC',
+                                       'MCAR',
+                                       'CBA', 
+                                       'CBA + multiple minimum support',
+                                       'MAC',
+                                       'SVAC - support and confidence',
+                                       'SVAC - rule voting',
+                                       'SVAC - feature weight',
+                                       'SVAC'),
+                      'Accuracy'   = c(percent(mean(df.result.comp[, 16])),
+                                       percent(mean(df.result.comp[, 22])),
                                        percent(mean(df.result.comp[, 13])),
                                        percent(mean(df.result.comp[, 19])),
+                                       percent(mean(df.result.comp[, 25])),
                                        percent(mean(df.result.comp[, 7])),
                                        percent(mean(df.result.comp[, 4])),
                                        percent(mean(df.result.comp[, 10])),
                                        percent(mean(df.result.comp[, 1]))),
-                      'Rule_size'  = c(round(mean(df.result.comp[, 17]), 0), 
+                      'Rule_size'  = c(round(mean(df.result.comp[, 17]), 0),
+                                       round(mean(df.result.comp[, 23]), 0),
                                        round(mean(df.result.comp[, 14]), 0),
                                        round(mean(df.result.comp[, 20]), 0),
+                                       round(mean(df.result.comp[, 26]), 0),
                                        round(mean(df.result.comp[, 8]), 0),
                                        round(mean(df.result.comp[, 5]), 0),
                                        round(mean(df.result.comp[, 11]), 0),
                                        round(mean(df.result.comp[, 2]), 0)),
-                      'Number_of_default_class' = c(round(mean(df.result.comp[, 18]), 0), 
+                      'Number_of_default_class' = c(round(mean(df.result.comp[, 18]), 0),
+                                                    round(mean(df.result.comp[, 24]), 0),
                                                     round(mean(df.result.comp[, 15]), 0),
                                                     round(mean(df.result.comp[, 21]), 0),
+                                                    round(mean(df.result.comp[, 27]), 0),
                                                     round(mean(df.result.comp[, 9]), 0),
                                                     round(mean(df.result.comp[, 6]), 0),
                                                     round(mean(df.result.comp[, 12]), 0),
@@ -111,3 +119,9 @@ kfold.cba(data = df.i, support = 0.001, confidence = 0.01, K = 5)
 
 # K-fold CBA with multiple minimum supports
 kfold.cba(data = df.i, support = 0.001, confidence = 0.01, K = 5, balanceSupport = T)
+
+# K-fold MCAR 
+kfold.mcar(data = df.i, support = 0.001, confidence = 0.01, K = 5)
+
+# K-fold MAC
+kfold.mac(data = df.i, support = 0.001, confidence = 0.01, K = 5)
