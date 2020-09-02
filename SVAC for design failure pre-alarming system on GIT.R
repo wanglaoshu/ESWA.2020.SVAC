@@ -23,9 +23,25 @@ load("functions.Rdata")
 ### Analysis
 #########################################################################################################################
 
-# Table 4. Generated rules
+# Table 4. Example of generated rules
+table.4 <- rules.sub[order(rules.sub$confidence,
+                           rules.sub$support,
+                           -(rules.sub$LHS),
+                           decreasing = T), -11]
+table.4['Rank'] <- c(1:5)
+
+print(table.4)
 
 
+# Table 5. Example of ranked rules
+table.5 <- rules.sub[order(rules.sub$LHS,
+                           rules.sub$GM,
+                           rules.sub$lift,
+                           decreasing = T), -11]
+
+table.5['Rank'] <- c(1:5)
+
+print(table.5)
 
 # Table 6. Test case
 table.6 <- df.test[6556, 1:5]
@@ -33,12 +49,11 @@ table.6 <- df.test[6556, 1:5]
 print(table.6)
 
 # Table 7. Example of applicable rules for the test case
-table.7 <- rbind(df.rules.cand[2, c(1:8, 14)],
+table.7 <- rbind(df.rules.cand[46, c(1:8, 14)],
                  df.rules.cand[370, c(1:8, 14)],
-                 df.rules.cand[7, c(1:8, 14)],
+                 df.rules.cand[23, c(1:8, 14)],
                  df.rules.cand[367, c(1:8, 14)],
-                 df.rules.cand[387, c(1:8, 14)]
-)
+                 df.rules.cand[387, c(1:8, 14)])
 
 print(table.7)
 
@@ -47,81 +62,51 @@ table.8 <- cbind(data.frame('Rank'  = c(1,2,3,4,5)),
                  'RSN_CD'           = df.rules.cand.tmp[order(df.rules.cand.tmp$scoreSum,
                                                               decreasing = T), ][c(1:4, 6), 6],
                  'Aggregated_Score' = round(df.rules.cand.tmp[order(df.rules.cand.tmp$scoreSum,
-                                                                    decreasing = T), ][c(1:4, 6), 15], digits = 4)
-)
+                                                                    decreasing = T), ][c(1:4, 6), 15], digits = 4))
 
 print(table.8)
 
-# Table 9. Average accuracy for eadch algorithm
-table.9 <- data.frame('Algorithms' = c('WCBA',
-                                       'MMAC',
-                                       'CMAR',
-                                       'MCAR',
-                                       'CBA', 
-                                       'CBA + multiple minimum support',
-                                       'PCAR',
-                                       'MAC',
-                                       'SVAC - support and confidence',
-                                       'SVAC - rule voting',
-                                       'SVAC - feature weight',
-                                       'SVAC'),
-                      'Accuracy'   = c(round(mean(df.result.comp[, 31]), 4),
-                                       round(mean(df.result.comp[, 16]), 4),
-                                       round(mean(df.result.comp[, 28]), 4),
-                                       round(mean(df.result.comp[, 22]), 4),
-                                       round(mean(df.result.comp[, 13]), 4),
-                                       round(mean(df.result.comp[, 19]), 4),
-                                       round(mean(df.result.comp[, 34]), 4),
-                                       round(mean(df.result.comp[, 25]), 4),
-                                       round(mean(df.result.comp[, 7]), 4),
-                                       round(mean(df.result.comp[, 4]), 4),
-                                       round(mean(df.result.comp[, 10]), 4),
-                                       round(mean(df.result.comp[, 1])), 4),
-                      'Sensitivity' = c(round(mean(result.measures[, 52]), 4),
-                                       round(mean(result.measures[, 27]), 4),
-                                       round(mean(result.measures[, 47]), 4),
-                                       round(mean(result.measures[, 27]), 4),
-                                       round(mean(result.measures[, 22]), 4),
-                                       round(mean(result.measures[, 32]), 4),
-                                       round(mean(result.measures[, 57]), 4),
-                                       round(mean(result.measures[, 42]), 4),
-                                       round(mean(result.measures[, 12]), 4),
-                                       round(mean(result.measures[, 7]), 4),
-                                       round(mean(result.measures[, 17]), 4),
-                                       round(mean(result.measures[, 2])), 4),
-                      'Specificity' = c(round(mean(result.measures[, 53]), 4),
-                                        round(mean(result.measures[, 28]), 4),
-                                        round(mean(result.measures[, 48]), 4),
-                                        round(mean(result.measures[, 28]), 4),
-                                        round(mean(result.measures[, 23]), 4),
-                                        round(mean(result.measures[, 33]), 4),
-                                        round(mean(result.measures[, 58]), 4),
-                                        round(mean(result.measures[, 43]), 4),
-                                        round(mean(result.measures[, 13]), 4),
-                                        round(mean(result.measures[, 8]), 4),
-                                        round(mean(result.measures[, 18]), 4),
-                                        round(mean(result.measures[, 3])), 4),
-                      'Rule_size'  = c(round(mean(df.result.comp[, 29]), 0),
-                                       round(mean(df.result.comp[, 17]), 0),
-                                       round(mean(df.result.comp[, 23]), 0),
-                                       round(mean(df.result.comp[, 14]), 0),
-                                       round(mean(df.result.comp[, 20]), 0),
-                                       round(mean(df.result.comp[, 26]), 0),
-                                       round(mean(df.result.comp[, 8]), 0),
-                                       round(mean(df.result.comp[, 5]), 0),
-                                       round(mean(df.result.comp[, 11]), 0),
-                                       round(mean(df.result.comp[, 2]), 0)),
-                      'Number_of_default_class' = c(round(mean(df.result.comp[, 30]), 0),
-                                                    round(mean(df.result.comp[, 18]), 0),
-                                                    round(mean(df.result.comp[, 24]), 0),
-                                                    round(mean(df.result.comp[, 15]), 0),
-                                                    round(mean(df.result.comp[, 21]), 0),
-                                                    round(mean(df.result.comp[, 27]), 0),
-                                                    round(mean(df.result.comp[, 9]), 0),
-                                                    round(mean(df.result.comp[, 6]), 0),
-                                                    round(mean(df.result.comp[, 12]), 0),
-                                                    round(mean(df.result.comp[, 3]), 0))
-)
+# Table 9. Average accuracy of each algorithm
+algorithms <- c('WCBA','MMAC','CMAR','MCAR','CBA','CBA + multiple minimum support',
+                'PCAR','MAC','SVAC - support and confidence','SVAC - rule voting',
+                'SVAC - feature weight','SVAC')
+
+accuracy <- c()
+
+for(i in c(31,16,28,22,13,19,34,25,7,4,10,1)){
+  accuracy <- c(accuracy, round(mean(df.result[, i]), 4))
+}
+
+sensitivity <- c()
+
+for(i in c(41,21,37,29,17,25,45,33,9,5,13,1)){
+  sensitivity <- c(sensitivity, round(mean(result.measures[, i]), 4))
+}
+
+specificity <- c()
+
+for(i in c(42,22,38,30,18,26,46,34,10,6,14,2)){
+  specificity <- c(specificity, round(mean(result.measures[, i]), 4))
+}
+
+ruleSize <- c()
+
+for(i in c(32,17,29,23,14,20,35,26,8,5,11,2)){
+  ruleSize <- c(ruleSize, round(mean(df.result[, i]), 0))
+}
+
+defaultClasses <- c()
+
+for(i in c(33,18,30,24,15,21,36,27,9,6,12,3)){
+  defaultClasses <- c(defaultClasses, round(mean(df.result[, i]), 0))
+}
+
+table.9 <- data.frame('Algorithms'  = algorithms,
+                      'Accuracy'    = accuracy,
+                      'Sensitivity' = sensitivity,
+                      'Specificity' = specificity,
+                      'Rule_size'   = ruleSize,
+                      'Prediction_made_by_default_classes' = defaultClasses)
 
 print(table.9)
 
@@ -170,5 +155,3 @@ kfold.wcba(data = df.i, support = 0.001, confidence = 0.01, K = 5)
 
 # K-fold PCAR
 kfold.mac(data = df.i, support = 0.001, confidence = 0.01, K = 5)
-
-
