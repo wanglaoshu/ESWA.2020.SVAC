@@ -1,4 +1,4 @@
-# H1, ESWA.2020.SVAC
+# ESWA.2020.SVAC
 
 Reproduction code for:
 
